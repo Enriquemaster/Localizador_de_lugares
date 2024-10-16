@@ -1,0 +1,7 @@
+{
+  "name": "Localizador_de_lugares",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}
