@@ -3,6 +3,7 @@ import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonInp
 import { useLocation } from '../context/LocationContext';
 import GoogleMapComponent from './mapa'; // Asegúrate de que la ruta sea correcta
 import { Storage } from '@ionic/storage';
+import imagenWebp from './assets/images/ttten.svg'; // Importa la imagen .webp
 
 interface Location {
   latitude: number;
@@ -17,6 +18,8 @@ const Home: React.FC = () => {
   const [latitudeInput, setLatitudeInput] = useState('');
   const [longitudeInput, setLongitudeInput] = useState('');
   const [mapCenter, setMapCenter] = useState<{ lat: number; lng: number } | null>(null);
+
+  
 
   // Inicializar almacenamiento
   useEffect(() => {
@@ -51,11 +54,16 @@ const Home: React.FC = () => {
     }
   };
 
+
+  
   // Maneja el clic en el mapa
   const handleMapClick = (event: any) => {
     const lat = event.latLng.lat();
     const lng = event.latLng.lng();
     const newMarker = { lat, lng };
+   
+
+
 
     setMarkers((prevMarkers) => [...prevMarkers, newMarker]);
     setSavedLocations((prevLocations) => {
@@ -85,7 +93,19 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     if (coordinates) {
+      // Establece el centro del mapa en la ubicación actual
       setMapCenter({ lat: coordinates.latitude, lng: coordinates.longitude });
+  
+      // Añade un marcador en la ubicación actual
+      const currentLocationMarker = { lat: coordinates.latitude, lng: coordinates.longitude };
+      setMarkers((prevMarkers) => [...prevMarkers, currentLocationMarker]);
+  
+      // Guarda la ubicación actual en el almacenamiento local
+      setSavedLocations((prevLocations) => {
+        const updatedLocations = [...prevLocations, { latitude: coordinates.latitude, longitude: coordinates.longitude }];
+        saveLocations(updatedLocations);
+        return updatedLocations;
+      });
     }
   }, [coordinates]);
 
@@ -97,7 +117,10 @@ const Home: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen className="bg-gray-100 p-2">
-        <div className="bg-white rounded-lg shadow-md p-2">
+
+
+        
+        <div className="bg-white rounded-lg shadow-md p-2" >
           {/* Formulario de búsqueda */}
           <div className="flex flex-col">
             <div className="flex flex-row"> {/* Fila para inputs y botón */}
@@ -134,7 +157,7 @@ const Home: React.FC = () => {
               Latitud: {coordinates.latitude}, Longitud: {coordinates.longitude}
             </p>
           ) : (
-            <p className="text-gray-500">No se ha obtenido la ubicación aún.</p>
+            <p className="text-gray-500">No se han obtenido la ubicación aún.</p>
           )}
           <IonButton onClick={getCurrentPosition} expand="full" color="primary" className="mt-4">
             Obtener Ubicación
@@ -153,6 +176,7 @@ const Home: React.FC = () => {
           ))}
         </ul>
         </div>
+        <img src={imagenWebp} alt="Descripción de la imagen" className="w-full h-auto mb-2" />
       </IonContent>
     </IonPage>
   );

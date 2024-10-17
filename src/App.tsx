@@ -1,6 +1,7 @@
 import { Redirect, Route } from 'react-router-dom';
 import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
+import Sobre from './pages/sobre';
 import Home from './pages/Home';
 import Welcome from './pages/welcome';
 
@@ -45,12 +46,12 @@ const App: React.FC = () => (
         <Route exact path="/">
           <Redirect to="/welcome"/>
         </Route>
-
         <Route exact path="/welcome">
           <Welcome />
         </Route>
-
-
+        <Route exact path="/sobre">
+          <Sobre />
+        </Route>
         <Route exact path="/home">
           <Home />
         </Route>
